@@ -1,0 +1,42 @@
+version: 2.0
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build:
+    working_directory: ~/circleci-demo-python-flask
+    docker:
+      - image: circleci/python:3.6.5
+        environment:
+          FLASK_CONFIG: testing
+    steps:
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+      - restore_cache:  # ensure this step occurs *before* installing dependencies
+         key: deps9-{{ .Branch }}-{{ checksum "requirement.txt" }}
+      - run:
+          name: Dependencies
+          command: |
+            pip install virtualenv
+            virtualenv venv -p python3.6
+            source venv/bin/activate
+            pip install --upgrade pip
+            pip install -r requirement.txt
+      - run:
+          name: Running test
+          command: |
+            source venv/bin/activate
+            pytest --junitxml=junit/test-results.xml
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "requirement.txt" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.6/site-packages"
+      - store_test_results:
+          path: junit
+      - store_artifacts:
+          path: junit
+          destination: tr1
