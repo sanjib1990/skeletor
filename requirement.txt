@@ -100,6 +100,7 @@ pyparsing==2.4.7
 pyrsistent==0.14.10
 PySocks==1.6.8
 pytest==5.4.3
+pytest-ordering==0.6
 python-arango==4.4.0
 python-dateutil==2.7.5
 python-dotenv==0.10.1
