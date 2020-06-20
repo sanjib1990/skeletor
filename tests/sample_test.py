@@ -14,3 +14,8 @@ def test_dummy_sec():
 @pytest.mark.run(order=2)
 def test_dummy_tw():
     assert True
+
+
+@pytest.mark.run(order=6)
+def test_dummy_six():
+    assert True
