@@ -31,19 +31,22 @@ jobs:
           # This path is specific to Ubuntu
           path: ~/.cache/pip
           # Look to see if there is a cache hit for the corresponding requirements file
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirement.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirement.txt') }}-1
           restore-keys: |
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
       - name: Install dependencies
         run: |
+          echo ">>>>>>>>>>>>>>>>>>>> installing libcurl4-openssl-dev <<<<<<<<<<<<<<<<<<"
           sudo apt install libcurl4-openssl-dev libssl-dev
+          echo ">>>>>>>>>>>>>>>>>>>> upgrading PIP <<<<<<<<<<<<<<<<<<"
           python -m pip install --upgrade pip
-          which flake8
+          echo ">>>>>>>>>>>>>>>>>>>> installing dependencies from requirement.txt <<<<<<<<<<<<<<<<<<"
           if [ -f requirement.txt ]; then pip install -r requirement.txt; fi
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
+          echo ">>>>>>>>>>>>>>>>>>>> flake8 linting <<<<<<<<<<<<<<<<<<"
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=20 --max-line-length=127 --statistics
