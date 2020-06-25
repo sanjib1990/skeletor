@@ -32,7 +32,7 @@ jobs:
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "requirement.txt" }}
           paths:
-            - ".venv"
+            - "venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python3.6/site-packages"
       - store_test_results:
