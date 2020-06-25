@@ -5,6 +5,15 @@ orbs:
 
 jobs:
   build:
+    branches:
+      only:
+        - master
+        - staging
+        - /feature\/*/
+        - /fix\/*/
+        - /hotfix\/*/
+        - /release*/
+        - /resolve\/*/
     working_directory: ~/circleci-demo-python-flask
     docker:
       - image: circleci/python:3.6.5
