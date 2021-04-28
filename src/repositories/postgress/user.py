@@ -6,8 +6,8 @@ from skeletor import db
 from skeletor.config import DATE_TIME_FORMAT
 from skeletor.utility.exceptions.general_error import GeneralException
 from skeletor.utility.jwt_auth import JWTAuth
-from src.models.user import User as UserModel
-from src.repositories.base import Base
+from src.models.postgress.user import User as UserModel
+from src.repositories.arango.base import Base
 
 
 class User(Base):

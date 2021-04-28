@@ -114,7 +114,7 @@ class BaseModel(db.Model, Cachable):
         return self.convert_includes_dict(includes)
 
     def get_es_index_mapping(self):
-        from src.repositories.elastic_base import ElasticInsertRepo
+        from src.repositories.elasticsearch.elastic_base import ElasticInsertRepo
         search = ElasticInsertRepo()
         return {
             self.es_name: {

@@ -15,11 +15,13 @@ DEBUG = False if ENV == 'production' else os.getenv('DEBUG', 'True') == 'True'
 
 SECRET_KEY = '$-mry&ws#7@crlm)rahnjrk+sw@_^-l!-wwow2ku2oa9xtxo!v'
 
-SERVER_HOST_NAME = os.getenv('SERVER_NAME', '127.0.0.1:5056')
+SERVER_HOST = os.getenv('SERVER_HOST', '127.0.0.1')
+SERVER_PORT = os.getenv('SERVER_PORT', '8000')
+SERVER_HOST_NAME = SERVER_HOST + ":" + SERVER_PORT
 
 DATABASES = {
     'postgress': {
-        "NAME": os.getenv('DEFAULT_DB_NAME', 'spectre'),
+        "NAME": os.getenv('DEFAULT_DB_NAME', 'skeletor'),
         "USER": os.getenv("DEFAULT_DB_USER_NAME", 'nebula'),
         "PASSWORD": os.getenv("DEFAULT_DB_PASSWORD"),
         "HOST": os.getenv("DEFAULT_DB_HOST", "localhost"),
@@ -27,7 +29,7 @@ DATABASES = {
         "PROTOCOL": os.getenv("DEFAULT_DB_PROTOCOL", "postgresql+psycopg2")
     },
     'arango': {
-        "NAME": os.getenv("ARANGO_DB_NAME", 'spectre'),
+        "NAME": os.getenv("ARANGO_DB_NAME", 'skeletor'),
         "USER": os.getenv("ARANGO_DB_USER", 'root'),
         "PASSWORD": os.getenv("ARANGO_DB_PASSWORD", ''),
         "HOST": os.getenv("ARANGO_DB_HOST", '127.0.0.1'),

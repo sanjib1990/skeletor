@@ -51,7 +51,7 @@ def do_db_auth(*args, **kwargs):
 
         if errors:
             if _user:
-                from src.repositories.user import User as UserRepo
+                from src.repositories.postgress.user import User as UserRepo
                 user_repo = UserRepo()
                 result = user_repo.update_user(**{
                     "updated_by": _user.get('email'),
@@ -106,7 +106,7 @@ def do_ext_auth(*args, **kwargs):
         else:
             auth_header = request.headers['Authorization'].split()
             token, bearer = decode_token(auth_header)
-            from src.repositories.app_property import AppPropertyRepo
+            from src.repositories.arango.app_property import AppPropertyRepo
             app_props = AppPropertyRepo().get()
             if not app_props \
                     or app_key_ext_auth not in app_props \

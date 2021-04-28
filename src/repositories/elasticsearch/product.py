@@ -1,8 +1,4 @@
-from skeletor import es
-
-from elasticsearch import Elasticsearch
-
-from src.repositories.elastic_base import ElasticSearchRepo
+from src.repositories.elasticsearch.elastic_base import ElasticSearchRepo
 
 
 class Product(object):

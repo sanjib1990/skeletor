@@ -49,6 +49,9 @@ app.config['ARANGO_DATABASE'] = DATABASES['arango']
 app.config['PROPAGATE_EXCEPTIONS'] = True
 doc.init_app(app)
 
+from skeletor.utility.logger import Logger
+app.logger = Logger().get(__name__)
+
 
 def before_send(event, hint):
     if 'exc_info' in hint:
@@ -60,18 +63,17 @@ def before_send(event, hint):
 
 @app.before_request
 def before_request(*args, **kwargs):
-    import json
     session.permanent = False
     user = session.get('user', None)
     if user:
-        print('{log_type} {user} [{method}] {url}'.format(
+        app.logger.info('{log_type} {user} [{method}] {url}'.format(
             log_type="request_logging",
             user=user.get('email'),
             method=request.method,
             url=request.url
         ))
 
-    print('[REQUEST_BODY] ' + request.get_data().decode())
+    app.logger.info(f'[REQUEST_BODY] {request.get_data().decode()}')
 
 
 @app.errorhandler(404)
@@ -96,7 +98,7 @@ def api_error_handler(e, code=500):
     if isinstance(str(e), str) and len(str(e).strip()) > 0:
         message = str(e)
 
-    print('{0}: {1}'.format(message, e))
+    app.logger.info('{0}: {1}'.format(message, e))
     data = {
         "message": message,
         'errors': validation

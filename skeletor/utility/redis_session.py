@@ -21,7 +21,7 @@ class RedisSessionInterface(SessionInterface):
     serializer = pickle
     session_class = RedisSession
 
-    def __init__(self, conf=None, prefix='spectre_session:'):
+    def __init__(self, conf=None, prefix='skeletor_session:'):
         if conf is None:
             redis = Redis()
         else:

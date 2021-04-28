@@ -21,7 +21,6 @@ def load_urls(app):
             )
             if blueprint:
                 app.register_blueprint(blueprint)
-            print("Imported: src.routes.%s" % module)
         except Exception as e:
             print(traceback.format_exc())
             print("Unimported: src.routes.%s" % module, e)

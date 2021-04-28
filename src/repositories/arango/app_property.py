@@ -3,9 +3,8 @@ from skeletor.utility.exceptions.general_error import GeneralException
 from skeletor.utility.exceptions.not_found_exception import NotFoundException
 from skeletor.utility.exceptions.validation_exception import ValidationException
 from src.models import User
-from skeletor.utility.logger import Logger
-from src.models.app_property import AppProperty
-from src.repositories.base import Base
+from src.models.arango.app_property import AppProperty
+from src.repositories.arango.base import Base
 
 
 class AppPropertyRepo(Base):
@@ -50,8 +49,7 @@ class AppPropertyRepo(Base):
             self.evict_cache()
             self.store_in_cache(self.__index_key__, updated_data['data'])
         except Exception as e:
-            Logger.log(Logger.FATAL, 'Update error: ' + traceback.format_exc())
-
+            self.logger.fatal(f'Update error: {traceback.format_exc()}')
             raise GeneralException(message=str(e))
 
         return updated_data['data']

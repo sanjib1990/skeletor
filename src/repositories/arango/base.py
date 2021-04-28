@@ -3,7 +3,7 @@ import copy
 import json
 from arango.database import TransactionDatabase
 from sqlalchemy import func
-from skeletor import db, doc
+from skeletor import db
 from skeletor.utility.logger import Logger
 from skeletor.utility.caching.base_cache import Caching
 from skeletor.utility.caching.caching_interface import CachingInterface
@@ -16,7 +16,7 @@ class Base(object):
     __metaclass__ = abc.ABCMeta
     cache: CachingInterface = Caching().db
     __db__: TransactionDatabase = None
-    logger = None
+    logger: Logger = None
 
     def __init__(self, *args, **kwargs):
         self._schema = self.schema
@@ -125,7 +125,7 @@ class Base(object):
         return res
 
     def delete_es_index(self):
-        from src.repositories.elastic_base import ElasticInsertRepo
+        from src.repositories.elasticsearch.elastic_base import ElasticInsertRepo
         search = ElasticInsertRepo()
         instance__ = self.get_es_model_instance()
         if not instance__.es_name:
@@ -135,7 +135,7 @@ class Base(object):
         return True
 
     def create_es_index(self):
-        from src.repositories.elastic_base import ElasticInsertRepo
+        from src.repositories.elasticsearch.elastic_base import ElasticInsertRepo
         search = ElasticInsertRepo()
         instance__ = self.get_es_model_instance()
         if not instance__.es_name:
@@ -165,7 +165,7 @@ class Base(object):
 
     def reindex_elastic(self):
         # drop index and recreate index
-        from src.repositories.elastic_base import ElasticInsertRepo
+        from src.repositories.elasticsearch.elastic_base import ElasticInsertRepo
         search = ElasticInsertRepo()
         instance__ = self.get_es_model_instance()
         if not instance__.es_name:
@@ -222,7 +222,7 @@ class ArangoRepoBase(Base):
         __filter = self.get_query_filters(**data)
         query = self.model.where(__filter)
         _query = query.to_aql(True)
-        Logger.log(Logger.INFO, f"[AQL QUERY] {_query}")
+        self.logger.info(f"[AQL QUERY] {_query}")
         cursor = self.model.aql.execute(_query)
         for x in cursor:
             return x

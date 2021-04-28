@@ -5,6 +5,7 @@ from flask_restful import Resource
 from skeletor import JSONRenderer
 from skeletor.utility.decorators import login_required, authenticate
 from skeletor.utility.exceptions.already_exists_exception import AlreadyExistsException
+from skeletor.utility.logger import Logger
 from src.services.user_context import UserContext
 
 
@@ -14,6 +15,19 @@ class BaseController(Resource):
     def __init__(self, *args, **kwargs):
         super(BaseController, self).__init__(*args, **kwargs)
         self.renderer = JSONRenderer()
+        self.logger = Logger().get(self.__class__.__name__)
+        pass
+
+    @staticmethod
+    def get_query_params():
+        from urllib.parse import urlsplit, parse_qsl
+        url = request.url
+        query = urlsplit(url).query
+        return dict(parse_qsl(query))
+
+    @staticmethod
+    def get_body():
+        return request.get_json()
 
     @abc.abstractmethod
     def get_search_dict(self):

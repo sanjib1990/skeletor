@@ -2,6 +2,8 @@ import warnings
 from skeletor import load_urls
 from flask_script import Manager, Command, Shell, Server
 
+from skeletor.utility.seeder import seed_db
+
 warnings.filterwarnings('ignore')
 
 
@@ -44,6 +46,11 @@ class AppServer(Server):
                                        threaded, processes, passthrough_errors, None, None)
 
 
+class SeedDB(Command):
+    def run(self):
+        seed_db()
+
+
 if __name__ == '__main__':
     from skeletor import app, migrate
     from flask_migrate import MigrateCommand
@@ -52,4 +59,5 @@ if __name__ == '__main__':
     manager.add_command('shell', AppShell())
     manager.add_command('syncdb', SyncDB())
     manager.add_command('db', MigrateCommand)
+    manager.add_command('seed-db', SeedDB)
     manager.run()

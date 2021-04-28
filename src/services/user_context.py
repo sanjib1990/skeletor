@@ -2,7 +2,7 @@ from flask import session
 from flask_restful import abort
 from skeletor.utility.caching.base_cache import Caching
 from src.models import User
-from src.repositories.user import User as UserRepo
+from src.repositories.postgress.user import User as UserRepo
 
 
 class UserContext:
